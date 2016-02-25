@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<layout>
+    <slide_adminhtml_slide_index>
+        <reference name="content">
+            <block type="slide/adminhtml_slide" name="slide"/>
+        </reference>
+    </slide_adminhtml_slide_index>
+    <slide_adminhtml_slide_grid>
+        <block type="slide/adminhtml_slide_grid" name="root"/>
+    </slide_adminhtml_slide_grid>
+    <slide_adminhtml_slide_edit>
+        <reference name="content">
+            <block type="adminhtml/slide_edit" name="slide_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="adminhtml/slide_edit_tabs" name="slide_edit_tabs">
+                <action method="addTab"><name>slide_edit_tab_view</name><block>slide_edit_tab_view</block></action>
+            </block>
+        </reference>
+    </slide_adminhtml_slide_edit>
+</layout>

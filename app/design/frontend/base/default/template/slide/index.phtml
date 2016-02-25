@@ -1,0 +1,67 @@
+<?php
+$collection= Mage::helper('slide/show')->getAllImages();
+$slide_status = Mage::helper('slide/show')->getSlideEnabled();
+$slide_speed = Mage::helper('slide/show')->getSlideSpeed();
+$show_homepage = Mage::helper("slide/show")->showhomepage();
+$show_category = Mage::helper("slide/show")->showCategory();
+$show_Product = Mage::helper("slide/show")->showProduct();
+//echo $show_Product; die();
+/*var_dump($collection); die();*/
+?>
+
+<?php if($slide_status==1 && $show_homepage==1) {?>
+    <link rel="stylesheet" href="<?php echo Mage::getBaseUrl(); ?>skin/frontend/base/default/css/main.css" type="text/css">
+    <script type="text/javascript" src="--><?php echo Mage::getBaseUrl(); ?><!--skin/frontend/base/default/js/jquery-2.1.4.min.js"></script>
+    <div id='wrapper'>
+        <div id='header'></div>
+        <div id='body'>
+            <div id="bigPic">
+                <div>
+                    <?php foreach ($collection as $image):?>
+                        <a href="<?php echo $image['url']?>"> <img src="<?php echo Mage::getBaseUrl().'media/'.$image['image'] ?>" alt=""/></a>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+        </div>
+        <div class='clearfix'></div>
+        <div id='push'></div>
+    </div>
+
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        var currentImage;
+        var currentIndex = -1;
+        var interval;
+        var speed=<?php echo $slide_speed; ?>;
+        function showImage(index) {
+            if (index < $j('#bigPic img').length) {
+                var indexImage = $j('#bigPic img')[index]
+                if (currentImage) {
+                    if (currentImage != indexImage) {
+                        $j(currentImage).css('z-index', 2);
+                        clearTimeout(myTimer);
+                        $j(currentImage).fadeOut(550, function () {
+                            myTimer = setTimeout("showNext()", speed);
+                            $j(this).css({'display': 'none', 'z-index': 1})
+                        });
+                    }
+                }
+                $j(indexImage).css({'display': 'block', 'opacity': 1});
+                currentImage = indexImage;
+                currentIndex = index;
+            }
+        }
+        function showNext() {
+            var len = $j('#bigPic img').length;
+            var next = currentIndex < (len - 1) ? currentIndex + 1 : 0;
+            showImage(next);
+        }
+        var myTimer;
+        $j(document).ready(function () {
+            myTimer = setTimeout("showNext()", speed);
+            showNext(); //loads first image
+        });
+    </script>
+<?php } ?>
+
